@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="css/metro.css" rel="stylesheet">
+        <link href="css/metro-icons.css" rel="stylesheet">
+        <link href="css/docs.css" rel="stylesheet">
+
+        <script src="js/jquery-2.1.3.min.js"></script>
+        <script src="js/metro.js"></script>
+        <script src="js/docs.js"></script>
+        <script src="js/ga.js"></script>
+
+        <style>
+            a > label
+            {
+                padding-left: 10px;
+            }
+
+            .sidebar2
+            {
+                margin-bottom: 10px;
+            }
+            .tile-kost {
+                display: block;
+                float: left;
+                margin: 5px;
+                background-color: #eeeeee;
+                box-shadow: inset 0 0 1px #FFFFCC;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                overflow: visible;
+                width: 100%;
+                height: 200px;
+            }
+            .tile-kost:hover {
+                outline: #999999 solid 3px;
+            }
+            .tile-kost:active {
+                outline: 0;
+            }
+            .tile-kost.no-outline {
+                outline-color: transparent;
+            }
+            .tile-kost.small-tile {
+                width: 70px;
+                height: 70px;
+            }
+            .tile-kost.wide-tile {
+                width: 310px;
+                height: 150px;
+            }
+            .tile-kost.wide-tile-v {
+                height: 310px;
+                width: 150px;
+            }
+            .tile-kost.large-tile {
+                width: 310px;
+                height: 310px;
+            }
+            .tile-kost.big-tile {
+                width: 470px;
+                height: 470px;
+            }
+            .tile-kost.super-tile {
+                width: 630px;
+                height: 630px;
+            }
+            .tile-kost .tile-content.flipVertical {
+                -webkit-transform: perspective(1000px);
+                transform: perspective(1000px);
+                overflow: visible;
+            }
+            .tile-kost:hover .tile-content.flipVertical,
+            .tile-kost.hover .tile-content.flipVertical,
+            .tile-kost.flip .tile-content.flipVertical {
+                -webkit-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+            }
+            .tile-kost .tile-content.flipVertical {
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+                transition: all 0.6s ease;
+            }
+            .tile-kost .tile-content.flipVertical .slide,
+            .tile-kost .tile-content.flipVertical .slide-over {
+                top: 0;
+                left: 0;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            .tile-kost .tile-content.flipVertical .slide {
+                z-index: 2;
+                -webkit-transform: rotateY(0deg);
+                transform: rotateY(0deg);
+            }
+            .tile-kost .tile-content.flipVertical .slide-over {
+                -webkit-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+            }
+            .tile-kost .tile-content.flipHorizontal {
+                -webkit-transform: perspective(1000px);
+                transform: perspective(1000px);
+                overflow: visible;
+            }
+            .tile-kost:hover .tile-content.flipHorizontal,
+            .tile-kost.hover .tile-content.flipHorizontal,
+            .tile-kost.flip .tile-content.flipHorizontal {
+                -webkit-transform: rotateX(180deg);
+                transform: rotateX(180deg);
+            }
+            .tile-kost .tile-content.flipHorizontal {
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+                transition: all 0.6s ease;
+            }
+            .tile-kost .tile-content.flipHorizontal .slide,
+            .tile-kost .tile-content.flipHorizontal .slide-over {
+                top: 0;
+                left: 0;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            .tile-kost .tile-content.flipHorizontal .slide {
+                z-index: 2;
+                -webkit-transform: rotateX(0deg);
+                transform: rotateX(0deg);
+            }
+            .tile-kost .tile-content.flipHorizontal .slide-over {
+                -webkit-transform: rotateX(180deg);
+                transform: rotateX(180deg);
+            }
+            .tile-kost .tile-badge {
+                position: absolute;
+                bottom: 0;
+                right: .625rem;
+                padding: .25rem .625rem;
+                z-index: 999;
+            }
+            .tile-kost .tile-label {
+                position: absolute;
+                bottom: 0;
+                text-align: center;
+                z-index: 999;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app-bar" data-role="appbar">
+            <div class="grid">
+                <div class="row cells3">
+                    <div class="cell"></div>
+                    <div class="cell">
+                        <div id="searchbar" class="input-control text full-size" data-role="input">
+                            <input type="text">
+                            <button class="button"><span class="mif-search"></span></button>
+                        </div>
+                    </div>
+                    <div class="cell"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="row cells11">
+                <div class="cell colspan2" style="padding-left: 20px">
+                    <ul class="sidebar2 place-right">
+                        <li class="title"><span class="mif-map"></span> Daerah</li>
+                        <li></li>
+                        <a>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Balebak</span>
+                            </label><br>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Balio</span>
+                            </label><br>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Cibanteng</span>
+                            </label><br>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Dramaga Cantik</span>
+                            </label><br>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Dramaga Regency</span>
+                            </label><br>
+                        </a>
+                    </ul>
+                    <ul class="sidebar2 place-right">
+                        <li class="title"><span class="mif-money"></span> Harga</li>
+                        <li></li>
+                        <a>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Tahunan</span>
+                            </label><br>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Bulanan</span>
+                            </label><br>
+                        </a>
+                    </ul>
+                    <ul class="sidebar2 place-right">
+                        <li class="title"><span class="mif-users"></span> Gender</li>
+                        <li></li>
+                        <a>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Pria</span>
+                            </label><br>
+                            <label class="input-control checkbox small-check">
+                                <input type="checkbox">
+                                <span class="check"></span>
+                                <span class="caption">Wanita</span>
+                            </label><br>
+                        </a>
+                    </ul>
+                </div>
+                <div class="cell colspan9" style="padding-right: 20px">
+                    <h3>Ditemukan 15 hasil</h3>
+                    <div class="example">
+                        <div class="grid">
+                            <div class="row cells5">
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/1.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/2.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/3.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/4.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/5.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="row cells5">
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/1.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/2.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/3.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/4.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/5.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="row cells5">
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/1.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/2.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/3.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/4.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell">
+                                    <div class="tile-kost">
+                                        <div class="tile-content">
+                                            <div class="image-container image-format-fill" style="width: 100%; height: 100%;">
+                                                <div class="frame">
+                                                    <div style="width: 100%; height: 150px; border-radius: 0px; background-image: url(images/5.jpg); background-size: cover; background-repeat: no-repeat;"></div>                 
+                                                </div>
+                                            </div>
+                                            <span class="tile-label">
+                                                <strong>Lorem Ipsum</strong><br>Rp 2.000.000,-
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
